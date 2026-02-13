@@ -1,5 +1,6 @@
 # AI / LLM
-anthropic>=0.39.0
+anthropic>=0.39.0 # Keep for future use (Prod env)
+google-genai>=1.63.0 # Gemini API client library
 
 # Data Processing
 pandas>=2.2.0
