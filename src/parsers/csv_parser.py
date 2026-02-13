@@ -265,8 +265,7 @@ if __name__ == "__main__":
     """Test CSV parser with sample data."""
     logger.info("Running CSV parser module test")
     
-    # This will fail initially (no sample file yet)
-    # We'll create the sample CSV in the next step
+# Module-level test - verifies parser works with sample data
     try:
         parser = CSVParser()
         sample_file = Path(__file__).parent.parent.parent / 'data' / 'sample_risk_register.csv'

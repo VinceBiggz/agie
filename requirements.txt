@@ -1,12 +1,12 @@
 # AI / LLM
-anthropic==0.39.0
+anthropic>=0.39.0
 
 # Data Processing
-pandas==2.2.0
+pandas>=2.2.0
 
 # CLI Interface
-click==8.1.7
-rich==13.7.0
+click>=8.1.7
+rich>=13.7.0
 
 # Environment Variables
-python-dotenv==1.0.0
+python-dotenv>=1.0.0
