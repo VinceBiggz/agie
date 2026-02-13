@@ -1,0 +1,11 @@
+risk_id,risk_description,likelihood,impact,category,owner,mitigation,status
+RISK-001,Unauthorized access to customer data due to weak authentication,4,5,Security,IT Security Team,Implement MFA and password policies,Open
+RISK-002,Data loss from inadequate backup procedures,3,4,Operations,IT Operations,Automated daily backups with testing,In Progress
+RISK-003,AI model bias affecting loan approval decisions,3,5,AI/ML,Data Science Team,Bias testing and fairness audits,Open
+RISK-004,Third-party vendor data breach exposing sensitive information,4,4,Third Party,Procurement,Vendor security assessments,Open
+RISK-005,Lack of audit trail for AI decision-making,2,4,Compliance,Legal Team,Implement comprehensive logging,Planned
+RISK-006,Insider threat from privileged user access,2,5,Security,HR & IT Security,Access reviews and monitoring,In Progress
+RISK-007,AI model drift reducing prediction accuracy,3,3,AI/ML,Data Science Team,Model monitoring and retraining schedule,Open
+RISK-008,Insufficient disaster recovery capabilities,3,5,Operations,IT Operations,DR plan and annual testing,Planned
+RISK-009,Non-compliance with GDPR data retention policies,4,4,Compliance,Legal Team,Data classification and retention policy,Open
+RISK-010,Explainability gap in AI credit scoring model,3,4,AI/ML,Data Science Team,Implement SHAP/LIME explanations,In Progress
