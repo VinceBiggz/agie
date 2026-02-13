@@ -51,3 +51,9 @@ python src/agie.py analyze --risk-register data/sample_risk_register.csv --use-c
 ```
 
 ## Architecture
+Input (CSV + Use Case)
+→ Parser (Validation)
+→ Analyzer (ISO Mapping + AI Risk Detection)
+→ Scoring Engine
+→ Report Generator (Markdown)
+→ Output
