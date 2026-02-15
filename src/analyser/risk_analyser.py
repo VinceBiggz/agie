@@ -3,7 +3,7 @@ Risk analyser integration module.
 
 This module orchestrates the complete risk analysis workflow:
 1. Parse risk register CSV
-2. Analyze AI use case with Claude
+2. analyser AI use case with Claude
 3. Combine results for comprehensive governance assessment
 
 @author: Vincent Wachira
@@ -23,7 +23,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.parsers.csv_parser import CSVParser, CSVParserError
-from src.analyser.mock_claude_client import ClaudeClient, ClaudeClientError, AIRiskAnalysis
+from src.analyser.gemini_client import GeminiClient as ClaudeClient, GeminiClientError as ClaudeClientError, AIRiskAnalysis
 from src.logger import logger
 
 
@@ -58,7 +58,7 @@ class Riskanalyser:
     
     Example:
         >>> analyser = Riskanalyser()
-        >>> assessment = analyser.analyze(
+        >>> assessment = analyser.analyser(
         ...     risk_register_path='data/risks.csv',
         ...     use_case_description='Deploy AI chatbot'
         ... )
@@ -75,7 +75,7 @@ class Riskanalyser:
         logger.info("Riskanalyser initialized")
         logger.info("Components: CSVParser, ClaudeClient (mock mode)")
     
-    def analyze(
+    def analyse(
         self,
         risk_register_path: Path | str,
         use_case_description: str,
@@ -86,7 +86,7 @@ class Riskanalyser:
         
         Args:
             risk_register_path: Path to CSV risk register file
-            use_case_description: Description of AI use case to analyze
+            use_case_description: Description of AI use case to analyser
             context: Optional context (industry, data types, etc.)
             
         Returns:
@@ -97,7 +97,7 @@ class Riskanalyser:
             
         Example:
             >>> analyser = Riskanalyser()
-            >>> assessment = analyser.analyze(
+            >>> assessment = analyser.analyser(
             ...     'data/sample_risk_register.csv',
             ...     'Using AI for customer support chatbot',
             ...     {'industry': 'financial services'}
@@ -118,7 +118,7 @@ class Riskanalyser:
             logger.error(error_msg)
             raise RiskanalyserError(error_msg)
         
-        # Step 2: Analyze AI use case
+        # Step 2: analyser AI use case
         logger.info("Step 2/4: Analyzing AI use case with governance framework...")
         try:
             ai_analysis = self.claude_client.analyze_use_case(
@@ -127,7 +127,7 @@ class Riskanalyser:
             )
             logger.info(f"✓ Identified {len(ai_analysis.ai_risks)} AI-specific risks")
         except ClaudeClientError as e:
-            error_msg = f"Failed to analyze use case: {e}"
+            error_msg = f"Failed to analyser use case: {e}"
             logger.error(error_msg)
             raise RiskanalyserError(error_msg)
         
@@ -327,7 +327,7 @@ if __name__ == "__main__":
         
         # Run analysis
         logger.info("\nStarting comprehensive analysis...\n")
-        assessment = analyser.analyze(risk_register, use_case, context)
+        assessment = analyser.analyser(risk_register, use_case, context)
         
         # Display summary
         summary = analyser.get_assessment_summary(assessment)
