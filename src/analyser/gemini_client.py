@@ -38,6 +38,14 @@ from src.logger import logger
 # Load environment variables
 load_dotenv()
 
+# Import model discovery for automatic fallback
+try:
+    from src.utils.model_discovery import ModelDiscovery
+    MODEL_DISCOVERY_AVAILABLE = True
+except ImportError:
+    MODEL_DISCOVERY_AVAILABLE = False
+    logger.warning("ModelDiscovery not available - using hardcoded model names")
+
 
 @dataclass
 class AIRiskAnalysis:
@@ -143,7 +151,7 @@ class GeminiClient:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "gemini-2.5-flash",
+        model: str = "gemini-2.0-flash-exp",
         rate_limit_rpm: int = 15
     ):
         """
@@ -170,7 +178,24 @@ class GeminiClient:
         self.model_name = model
         
         # Create Gemini client (new SDK architecture)
-        self.client = genai.Client(api_key=self.api_key)
+        try:
+            self.client = genai.Client(api_key=self.api_key)
+        except Exception as e:
+            error_msg = f"Failed to create Gemini client: {e}"
+            logger.critical(error_msg)
+            raise GeminiClientError(error_msg)
+        
+        # Validate model name and use fallback if needed
+        if MODEL_DISCOVERY_AVAILABLE:
+            discovery = ModelDiscovery()
+            if not discovery.validate_model(self.model_name, 'gemini'):
+                logger.warning(f"Model '{self.model_name}' not available")
+                fallback_model = discovery.get_best_gemini_model('flash')
+                if fallback_model:
+                    logger.info(f"Using fallback model: {fallback_model}")
+                    self.model_name = fallback_model
+                else:
+                    logger.error("No fallback models available")
         
         # Initialize rate limiter
         self.rate_limiter = RateLimiter(max_requests=rate_limit_rpm, time_window=60)
