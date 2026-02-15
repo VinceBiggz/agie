@@ -12,18 +12,24 @@ This module orchestrates the complete risk analysis workflow:
 @license: MIT
 """
 
+from __future__ import annotations 
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
 import pandas as pd
 
+from typing import Dict, List, Optional, TYPE_CHECKING
+
+# Type hint imports (only used for type checking, not runtime)
+if TYPE_CHECKING:
+    from src.analyser.gemini_client import AIRiskAnalysis
+
 # Add project root to Python path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.parsers.csv_parser import CSVParser, CSVParserError
-from src.analyser.gemini_client import GeminiClient as ClaudeClient, GeminiClientError as ClaudeClientError, AIRiskAnalysis
 from src.logger import logger
 
 
@@ -39,7 +45,7 @@ class ComprehensiveRiskAssessment:
         high_priority_items: Top risks requiring immediate attention
     """
     organizational_risks: pd.DataFrame
-    ai_governance_analysis: AIRiskAnalysis
+    ai_governance_analysis: 'AIRiskAnalysis'
     summary_statistics: Dict
     high_priority_items: List[Dict]
 
@@ -64,16 +70,41 @@ class Riskanalyser:
         ... )
         >>> print(f"Found {len(assessment.high_priority_items)} high-priority risks")
     """
-    
-    def __init__(self):
+    def __init__(self, ai_provider: str = 'gemini'):
         """
-        Initialize risk analyser with CSV parser and Claude client.
+        Initialize risk analyser with specified AI provider.
+        
+        Args:
+            ai_provider: Which AI to use ('gemini', 'claude', or 'mock')
         """
         self.csv_parser = CSVParser()
-        self.claude_client = ClaudeClient()
+        self.ai_provider = ai_provider.lower()
         
-        logger.info("Riskanalyser initialized")
-        logger.info("Components: CSVParser, ClaudeClient (mock mode)")
+        # Import and initialize the appropriate AI client
+        if self.ai_provider == 'gemini':
+            from src.analyser.gemini_client import GeminiClient, GeminiClientError
+            self.ai_client = GeminiClient()
+            self.AIClientError = GeminiClientError
+            logger.info("🤖 AI Provider: Gemini 2.5 Flash (Google)")
+            
+        elif self.ai_provider == 'claude':
+            from src.analyser.claude_client import ClaudeClient, ClaudeClientError
+            self.ai_client = ClaudeClient()
+            self.AIClientError = ClaudeClientError
+            logger.info("🤖 AI Provider: Claude Sonnet 4 (Anthropic)")
+            
+        elif self.ai_provider == 'mock':
+            from src.analyser.mock_claude_client import ClaudeClient as MockClient, ClaudeClientError as MockError
+            self.ai_client = MockClient()
+            self.AIClientError = MockError
+            logger.warning("🎭 AI Provider: Mock Mode (Offline)")
+            
+        else:
+            error_msg = f"Invalid AI provider: {ai_provider}"
+            logger.error(error_msg)
+            raise RiskanalyserError(error_msg)
+        
+        logger.info(f"Riskanalyser initialized with {self.ai_provider} provider")
     
     def analyse(
         self,
@@ -121,13 +152,13 @@ class Riskanalyser:
         # Step 2: analyser AI use case
         logger.info("Step 2/4: Analyzing AI use case with governance framework...")
         try:
-            ai_analysis = self.claude_client.analyze_use_case(
+            ai_analysis = self.ai_client.analyze_use_case(
                 use_case_description,
                 context
             )
             logger.info(f"✓ Identified {len(ai_analysis.ai_risks)} AI-specific risks")
-        except ClaudeClientError as e:
-            error_msg = f"Failed to analyser use case: {e}"
+        except self.AIClientError as e:
+            error_msg = f"Failed to analyze use case: {e}"
             logger.error(error_msg)
             raise RiskanalyserError(error_msg)
         

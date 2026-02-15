@@ -70,12 +70,19 @@ def cli():
     help='Additional context (e.g., "industry: financial services")'
 )
 @click.option(
+    '--ai-provider',
+    '-p',
+    type=click.Choice(['gemini', 'claude', 'mock'], case_sensitive=False),
+    default='gemini',
+    help='AI provider: gemini (free), claude (premium), or mock (offline)'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
     help='Enable verbose output'
 )
-def analyse(risk_register, use_case, output, context, verbose):
+def analyse(risk_register, use_case, output, context, ai_provider, verbose):
     """
     Analyse AI governance risks and generate report.
     
@@ -103,9 +110,9 @@ def analyse(risk_register, use_case, output, context, verbose):
                     key, value = pair.split(':', 1)
                     context_dict[key.strip()] = value.strip()
         
-        # Step 1: Initialize analyser
+        # Step 1: Initialize analyser with specified AI provider
         with console.status("[bold green]Initialising analyser...") as status:
-            analyser = Riskanalyser()
+            analyser = Riskanalyser(ai_provider=ai_provider)
             console.print("✓ Analyser ready", style="green")
         
         # Step 2: Run analysis
@@ -144,19 +151,20 @@ def analyse(risk_register, use_case, output, context, verbose):
         sys.exit(1)
         
     except GeminiClientError as e:
-        console.print(f"\n[bold red]✗ AI Analysis Error:[/bold red] {e}\n", style="red")
+        console.print(f"\n[bold red]✗ Gemini API Error:[/bold red] {e}\n", style="red")
         console.print("[dim]Hint: Check your GOOGLE_API_KEY in .env file[/dim]\n")
         logger.error(f"Gemini API failed: {e}")
         sys.exit(1)
         
-    except RiskanalyserError as e:
-        console.print(f"\n[bold red]✗ Analysis Error:[/bold red] {e}\n", style="red")
-        logger.error(f"Analysis failed: {e}")
-        sys.exit(1)
-        
     except Exception as e:
-        console.print(f"\n[bold red]✗ Unexpected Error:[/bold red] {e}\n", style="red")
-        logger.critical(f"Unexpected error: {e}", exc_info=True)
+        # Catch-all for ClaudeClientError or other AI errors
+        if 'Client' in str(type(e).__name__):
+            console.print(f"\n[bold red]✗ AI API Error:[/bold red] {e}\n", style="red")
+            console.print("[dim]Hint: Check your API key configuration[/dim]\n")
+            logger.error(f"AI API failed: {e}")
+        else:
+            console.print(f"\n[bold red]✗ Unexpected Error:[/bold red] {e}\n", style="red")
+            logger.critical(f"Unexpected error: {e}", exc_info=True)
         sys.exit(1)
 
 
