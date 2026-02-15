@@ -23,7 +23,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.parsers.csv_parser import CSVParser, CSVParserError
-from src.analyser.gemini_client import GeminiClient as ClaudeClient, GeminiClientError as ClaudeClientError, AIRiskAnalysis
+from src.analyser.mock_claude_client import ClaudeClient, ClaudeClientError, AIRiskAnalysis
 from src.logger import logger
 
 
@@ -341,6 +341,22 @@ if __name__ == "__main__":
             logger.info(f"   Action: {item['action']}")
         
         logger.info("\n✅ Riskanalyser integration test successful!")
+        
+        # Generate report
+        logger.info("\n📝 Generating markdown report...")
+        try:
+            from src.outputs.markdown_report import MarkdownReportGenerator
+            
+            generator = MarkdownReportGenerator()
+            report_path = generator.generate(assessment, output_path='agie_demo_report.md')
+            
+            logger.info(f"✅ Report generated: {report_path}")
+            logger.info(f"📄 View your report: cat {report_path}")
+            
+        except ImportError as e:
+            logger.warning(f"Report generator not available: {e}")
+        except Exception as e:
+            logger.error(f"Failed to generate report: {e}")
         
     except Exception as e:
         logger.critical(f"❌ Test failed: {e}", exc_info=True)
