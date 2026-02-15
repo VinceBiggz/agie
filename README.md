@@ -1,64 +1,63 @@
-source venv/bin/activatepip install --upgraqde # AGIE - AI Governance Intelligence Engine
+# AGIE - AI Governance Intelligence Engine
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Built with Gemini](https://img.shields.io/badge/Built%20with-Gemini%202.5%20Flash-blue)](https://ai.google.dev/)
 
-> Lightweight AI-powered governance analysis engine for risk assessment and ISO 27001 compliance mapping.
+> Professional AI governance risk assessment tool for IT leaders, CISOs, and compliance officers.
 
-## 🚧 Status: Active Development (V0.1) - Day 1 Complete!
+## 🎉 Status: V0.1 Complete! (Feb 15, 2025)
 
-**Built in public over one weekend.** Follow the journey:
-- LinkedIn: [Vincent Wachira](https://www.linkedin.com/in/vincentwachira)
-- GitHub: [@VinceBiggz](https://github.com/VinceBiggz)
+**Built in public over one weekend.** 
 
-### 🎉 Day 1 Achievements (Feb 14, 2025):
-- ✅ Professional project structure with centralized logging
-- ✅ CSV risk register parser with validation
-- ✅ Gemini 2.5 Flash integration (FREE tier!)
-- ✅ Production-grade rate limiting (15 RPM)
-- ✅ Mock client for development
-- ✅ Real AI governance analysis working
+**Author:** [Vincent Wachira](https://www.linkedin.com/in/vincentwachira) | [@VinceBiggz](https://github.com/VinceBiggz)
 
-**Coming Tomorrow:** Full end-to-end workflow, report generation, CLI interface
+### Weekend Build Achievements:
+- ✅ End-to-end risk analysis workflow (CSV → AI → Report)
+- ✅ Google Gemini 2.5 Flash integration (FREE - 1,500 requests/day)
+- ✅ Professional CLI with beautiful terminal output
+- ✅ Markdown report generation (executive-ready)
+- ✅ ISO 27001 control domain mapping
+- ✅ Production-grade rate limiting & error handling
+- ✅ Auto-fallback for API changes
+- ✅ Mock mode for offline development
+- ✅ 2,000+ lines of tested code
+- ✅ Analysis time: ~15 seconds
 
 ---
 
 ## What is AGIE?
 
-AGIE analyzes organizational risk registers and AI use cases against:
+AGIE analyses organisational risk registers and AI use cases against ISO 27001:2022 standards, identifying:
+- **AI-specific risks** (bias, explainability, model drift, hallucination)
 - **ISO 27001 control domains** (A.5 through A.18)
-- **AI-specific governance principles** (bias, explainability, model drift, third-party risk)
-- **Regulatory frameworks** (GDPR, financial regulations, data protection)
+- **Governance gaps** (missing policies, oversight, monitoring)
+- **Regulatory concerns** (GDPR, AI Act, data protection)
 
-**Output:** Executive-ready risk reports with actionable recommendations.
+**Output:** Executive-ready reports with prioritised recommendations.
 
-**This is NOT a chatbot.** It's an intelligence layer that produces structured, decision-grade insights for CISOs, compliance officers, and IT leaders.
+**This is NOT a chatbot.** It's an intelligence engine that produces structured, decision-grade insights.
 
 ---
 
 ## ✨ Features
 
-### Implemented ✅
-- **CSV Risk Register Parsing** - Validates and processes organizational risk data
-- **AI-Powered Analysis** - Google Gemini 2.5 Flash for governance assessment
+### Core Functionality
+- **CSV Risk Register Parser** - Validates and processes organisational risks
+- **AI-Powered Analysis** - Google Gemini 2.5 Flash (free tier) or Claude Sonnet 4 (premium)
 - **ISO 27001 Mapping** - Automatic control domain identification
-- **AI Risk Detection** - Identifies bias, explainability, drift, and third-party risks
-- **Rate Limiting** - Token bucket algorithm (15 requests/min)
-- **Comprehensive Logging** - Production-grade observability
-- **Mock Mode** - Develop without API calls
+- **Governance Assessment** - Identifies specific policy and process gaps
+- **Risk Scoring** - Likelihood × Impact methodology
+- **Report Generation** - Professional markdown reports for board presentations
+- **CLI Interface** - Beautiful terminal output with progress indicators
 
-### In Progress 🚧
-- Risk scoring engine (likelihood × impact)
-- Markdown report generation
-- CLI interface (`agie analyze ...`)
-- Multiple use case comparison
-
-### Planned 📋
-- PDF report export
-- Web interface
-- Custom taxonomy support
-- Historical tracking
+### Technical Features
+- **Rate Limiting** - Token bucket algorithm (15 RPM) prevents quota exhaustion
+- **Auto-Fallback** - Model discovery system handles API changes gracefully
+- **Mock Mode** - Develop and test without API calls
+- **Cross-Platform** - Works on macOS, Linux, Windows
+- **Type-Safe** - Comprehensive type hints and docstrings
+- **Production-Grade** - Extensive logging, error handling, validation
 
 ---
 
@@ -77,82 +76,121 @@ cd agie
 
 # Create virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Install (this registers 'agie' command)
+pip install -e .
 
 # Configure API key
 cp .env.example .env
-# Edit .env and add your GOOGLE_API_KEY
+# Edit .env: GOOGLE_API_KEY=your-key-here
 ```
 
-### Get Your Free Gemini API Key
-1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Create API key
-3. Add to `.env` file
+**Get free Gemini API key:** [Google AI Studio](https://aistudio.google.com/app/apikey)
 
-### Test the Components
+### Usage
 
 ```bash
-# Test CSV parser
-python src/parsers/csv_parser.py
+# Show help
+agie --help
 
-# Test Gemini AI analysis (REAL API call)
-python src/analyzer/gemini_client.py
+# See examples
+agie examples
 
-# Coming tomorrow: Full workflow
-python src/analyzer/risk_analyzer.py
+# Validate CSV format
+agie validate data/sample_risk_register.csv
+
+# Run analysis
+agie analyse \
+  -r data/sample_risk_register.csv \
+  -u "Deploy AI chatbot for customer support"
+
+# With context
+agie analyse \
+  -r data/sample_risk_register.csv \
+  -u "AI for loan approvals" \
+  -c "industry: financial services, data: PII" \
+  -o financial_report.md
+```
+
+### Expected Output
+
+```
+╭────────────────────────────────────────────╮
+│ AGIE - AI Governance Intelligence Engine   │
+│ Analysing AI risks against ISO 27001...    │
+╰────────────────────────────────────────────╯
+
+✓ Analyser ready
+✓ Analysis complete
+
+        Analysis Summary         
+┌─────────────────────┬─────────┐
+│ Overall Risk Score  │ 3.4/10  │
+│ Organisational Risks│ 10      │
+│ AI-Specific Risks   │ 7       │
+│ Governance Gaps     │ 9       │
+│ ISO 27001 Domains   │ 13      │
+│ High-Priority Items │ 10      │
+└─────────────────────┴─────────┘
+
+✓ Report saved: agie_report.md
 ```
 
 ---
 
-## 📊 Example Output
+## 📊 Sample Analysis Results
 
-```
-AI Risks Identified (7):
-  1. Bias and Discrimination in product recommendations
-  2. Explainability and Transparency gaps
-  3. Privacy Violations and Data Leakage risks
-  4. Model Drift and performance decay
-  5. Hallucination in financial advice
-  6. Data Poisoning/Integrity Attacks
-  7. Third-Party AI Risk from cloud services
+**Input:** Financial services chatbot use case + 10 organisational risks
 
-ISO 27001 Domains Affected (11):
-  - A.5 Information Security Policies
-  - A.8 Asset Management
-  - A.9 Access Control
-  - A.12 Operations Security
-  - A.15 Supplier Relationships
-  - A.18 Compliance
-  ... and 5 more
+**Output:**
+- **7 AI Risks:** Bias, explainability gaps, privacy violations, model drift, hallucination, data poisoning, third-party risk
+- **13 ISO Domains:** A.5 (Policies), A.8 (Assets), A.9 (Access), A.12 (Operations), A.14 (Development), A.15 (Suppliers), A.18 (Compliance), and more
+- **9 Governance Gaps:** Missing AI framework, weak data governance, insufficient monitoring, unclear accountability
+- **95% Confidence:** High-quality AI analysis
 
-Confidence Score: 0.95
-```
+**Report includes:**
+- Executive summary with risk scoring
+- Organisational risk breakdown
+- AI-specific risk analysis
+- ISO 27001 domain mapping with explanations
+- Governance gap assessment
+- Prioritised recommendations
+- High-priority action items
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-Input Layer
-  ├── CSV Risk Register Parser
-  └── Use Case Description
-
-Intelligence Layer
-  ├── Gemini 2.5 Flash API
-  ├── Rate Limiter (15 RPM)
-  └── Structured Prompt Engine
-
-Analysis Layer
-  ├── ISO 27001 Domain Mapper
-  ├── AI Risk Identifier
-  └── Governance Gap Analyzer
-
-Output Layer
-  ├── Risk Scoring Engine (coming)
-  └── Report Generator (coming)
+┌─────────────────┐
+│   User Input    │
+│  - CSV Risks    │
+│  - Use Case     │
+└────────┬────────┘
+         │
+         v
+┌─────────────────┐
+│  CSV Parser     │ ← Validates, calculates scores
+└────────┬────────┘
+         │
+         v
+┌─────────────────┐
+│ Risk Analyser   │ ← Orchestrates workflow
+└────┬───────┬────┘
+     │       │
+     v       v
+┌────────┐ ┌────────┐
+│ Gemini │ │ Claude │ ← AI analysis
+│ (FREE) │ │(Premium)│
+└────┬───┘ └────┬───┘
+     │          │
+     └────┬─────┘
+          v
+   ┌─────────────┐
+   │   Report    │ ← Markdown output
+   │  Generator  │
+   └─────────────┘
 ```
 
 ---
@@ -160,73 +198,112 @@ Output Layer
 ## 🛠️ Tech Stack
 
 - **Language:** Python 3.13
-- **AI Engine:** Google Gemini 2.5 Flash (free tier)
-- **Data Processing:** pandas
-- **CLI Framework:** click + rich
-- **Logging:** Python logging module
-- **Environment:** python-dotenv
+- **AI Engines:** Google Gemini 2.5 Flash (free) + Anthropic Claude Sonnet 4 (premium)
+- **Data:** pandas + pyarrow
+- **CLI:** click + rich (beautiful terminal output)
+- **Config:** python-dotenv
+
+**Why This Stack:**
+- Gemini free tier = unlimited development
+- Claude ready for premium analysis when needed
+- pandas = industry standard for data processing
+- rich = professional terminal UX
+- All cross-platform compatible
 
 ---
 
-## 📝 Development Philosophy
+## 📝 Project Structure
 
-- **Build in Public:** Transparent progress, real-time updates
-- **Production-Grade:** Comprehensive logging, error handling, rate limiting
-- **Test-Driven:** Every component tested before integration
-- **Documented:** Clear docstrings, type hints, comments
-- **Modular:** Single-responsibility modules, easy to extend
+```
+agie/
+├── src/
+│   ├── agie.py              # CLI entry point
+│   ├── logger.py            # Centralized logging
+│   ├── analyser/
+│   │   ├── gemini_client.py    # Gemini integration
+│   │   ├── claude_client.py    # Claude integration
+│   │   ├── mock_claude_client.py  # Offline mode
+│   │   └── risk_analyser.py    # Main orchestrator
+│   ├── parsers/
+│   │   └── csv_parser.py       # CSV validation
+│   ├── outputs/
+│   │   └── markdown_report.py  # Report generator
+│   └── utils/
+│       └── model_discovery.py  # Auto-fallback system
+├── data/
+│   └── sample_risk_register.csv  # Test data
+├── docs/
+│   ├── HANDOVER.md          # Project documentation
+│   └── WEEKEND_PLAN.md      # Build timeline
+├── setup.py                 # Pip installation
+└── requirements.txt         # Dependencies
+```
 
 ---
 
 ## 🗺️ Roadmap
 
-### V0.1 (This Weekend - Feb 14-16)
-- [x] Project structure
-- [x] CSV parser
+### V0.1 (Complete - Weekend Build)
+- [x] Core analysis engine
 - [x] Gemini API integration
-- [x] Mock client
-- [ ] Risk analyzer integration
-- [ ] Report generator
-- [ ] CLI interface
+- [x] Report generation
+- [x] Professional CLI
+- [x] Documentation
 
-### V0.2 (Week 2)
-- [ ] Enhanced ISO mapping
+### V0.2 (Next Week)
+- [ ] Claude API testing & comparison
+- [ ] PDF export option
 - [ ] Multiple use case comparison
-- [ ] PDF report output
-- [ ] Performance optimizations
+- [ ] Enhanced ISO mapping
+- [ ] CONTRIBUTING.md guide
 
-### V1.0 (Week 3+)
-- [ ] Web interface
+### V0.3 (Week 3)
+- [ ] Web interface prototype
 - [ ] Database persistence
-- [ ] Custom taxonomy support
 - [ ] Historical tracking
+- [ ] Custom taxonomies
+- [ ] Batch processing
+
+### V1.0 (Future)
 - [ ] API endpoint
+- [ ] Multi-language support
+- [ ] Plugin system
+- [ ] Enterprise features
 
 ---
 
 ## 🤝 Contributing
 
-This is a learning project built in public. Contributions welcome!
+This is an open-source learning project. Contributions welcome!
 
 **How to contribute:**
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-**Code Standards:**
-- Follow PEP 257 docstring conventions
+**Code standards:**
+- Follow PEP 257 docstrings
 - Use type hints
 - Add comprehensive logging
 - Test your changes
-- Use conventional commits
+- Use conventional commits (`feat:`, `fix:`, `docs:`)
+
+**Good first issues:**
+- Add more ISO domain explanations
+- Improve error messages
+- Add unit tests
+- Create tutorials
+- Translate documentation
 
 ---
 
 ## 📜 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE)
+
+Free to use, modify, and distribute. Attribution appreciated.
 
 ---
 
@@ -248,20 +325,29 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built with [Google Gemini](https://ai.google.dev/) 2.5 Flash (free tier)
-- Inspired by the need for practical AI governance tools in Africa
-- Part of the #BuildInPublic movement
+- **Google Gemini** - Free tier AI analysis
+- **Anthropic Claude** - Premium AI option
+- **ISO/IEC 27001:2022** - Security framework
+- **#BuildInPublic** community - Inspiration and support
 
 ---
 
 ## 📞 Support
 
-Having issues? Found a bug?
-- Open an issue on [GitHub](https://github.com/VinceBiggz/agie/issues)
-- Reach out on [LinkedIn](https://www.linkedin.com/in/vincentwachira)
+**Issues?** Open a [GitHub issue](https://github.com/VinceBiggz/agie/issues)
+
+**Questions?** Reach out on [LinkedIn](https://www.linkedin.com/in/vincentwachira)
+
+**Want to contribute?** PRs welcome!
 
 ---
 
-**⭐ Star this repo if you find it useful!**
+## ⭐ Star This Project
 
-*Built with ❤️ for IT leaders, CISOs, and compliance officers*
+If AGIE helps you assess AI governance risks, please star the repository!
+
+---
+
+**Built with ❤️ for IT leaders, CISOs, and compliance officers**
+
+*Making AI governance accessible, one risk assessment at a time.*
