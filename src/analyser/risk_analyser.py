@@ -1,5 +1,5 @@
 """
-Risk analyzer integration module.
+Risk analyser integration module.
 
 This module orchestrates the complete risk analysis workflow:
 1. Parse risk register CSV
@@ -23,7 +23,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from src.parsers.csv_parser import CSVParser, CSVParserError
-from src.analyzer.gemini_client import GeminiClient as ClaudeClient, GeminiClientError as ClaudeClientError, AIRiskAnalysis
+from src.analyser.gemini_client import GeminiClient as ClaudeClient, GeminiClientError as ClaudeClientError, AIRiskAnalysis
 from src.logger import logger
 
 
@@ -44,12 +44,12 @@ class ComprehensiveRiskAssessment:
     high_priority_items: List[Dict]
 
 
-class RiskAnalyzerError(Exception):
-    """Custom exception for risk analyzer errors."""
+class RiskanalyserError(Exception):
+    """Custom exception for risk analyser errors."""
     pass
 
 
-class RiskAnalyzer:
+class Riskanalyser:
     """
     Orchestrates complete AI governance risk analysis.
     
@@ -57,8 +57,8 @@ class RiskAnalyzer:
     comprehensive governance assessments for AI use cases.
     
     Example:
-        >>> analyzer = RiskAnalyzer()
-        >>> assessment = analyzer.analyze(
+        >>> analyser = Riskanalyser()
+        >>> assessment = analyser.analyze(
         ...     risk_register_path='data/risks.csv',
         ...     use_case_description='Deploy AI chatbot'
         ... )
@@ -67,12 +67,12 @@ class RiskAnalyzer:
     
     def __init__(self):
         """
-        Initialize risk analyzer with CSV parser and Claude client.
+        Initialize risk analyser with CSV parser and Claude client.
         """
         self.csv_parser = CSVParser()
         self.claude_client = ClaudeClient()
         
-        logger.info("RiskAnalyzer initialized")
+        logger.info("Riskanalyser initialized")
         logger.info("Components: CSVParser, ClaudeClient (mock mode)")
     
     def analyze(
@@ -93,11 +93,11 @@ class RiskAnalyzer:
             ComprehensiveRiskAssessment with combined findings
             
         Raises:
-            RiskAnalyzerError: If analysis fails at any stage
+            RiskanalyserError: If analysis fails at any stage
             
         Example:
-            >>> analyzer = RiskAnalyzer()
-            >>> assessment = analyzer.analyze(
+            >>> analyser = Riskanalyser()
+            >>> assessment = analyser.analyze(
             ...     'data/sample_risk_register.csv',
             ...     'Using AI for customer support chatbot',
             ...     {'industry': 'financial services'}
@@ -116,7 +116,7 @@ class RiskAnalyzer:
         except CSVParserError as e:
             error_msg = f"Failed to parse risk register: {e}"
             logger.error(error_msg)
-            raise RiskAnalyzerError(error_msg)
+            raise RiskanalyserError(error_msg)
         
         # Step 2: Analyze AI use case
         logger.info("Step 2/4: Analyzing AI use case with governance framework...")
@@ -129,7 +129,7 @@ class RiskAnalyzer:
         except ClaudeClientError as e:
             error_msg = f"Failed to analyze use case: {e}"
             logger.error(error_msg)
-            raise RiskAnalyzerError(error_msg)
+            raise RiskanalyserError(error_msg)
         
         # Step 3: Generate summary statistics
         logger.info("Step 3/4: Generating summary statistics...")
@@ -298,12 +298,12 @@ class RiskAnalyzer:
 
 # Module-level test
 if __name__ == "__main__":
-    """Test risk analyzer with sample data."""
-    logger.info("Running RiskAnalyzer integration test")
+    """Test risk analyser with sample data."""
+    logger.info("Running Riskanalyser integration test")
     
     try:
-        # Initialize analyzer
-        analyzer = RiskAnalyzer()
+        # Initialize analyser
+        analyser = Riskanalyser()
         
         # Paths
         risk_register = Path(__file__).parent.parent.parent / 'data' / 'sample_risk_register.csv'
@@ -327,10 +327,10 @@ if __name__ == "__main__":
         
         # Run analysis
         logger.info("\nStarting comprehensive analysis...\n")
-        assessment = analyzer.analyze(risk_register, use_case, context)
+        assessment = analyser.analyze(risk_register, use_case, context)
         
         # Display summary
-        summary = analyzer.get_assessment_summary(assessment)
+        summary = analyser.get_assessment_summary(assessment)
         print("\n" + summary + "\n")
         
         # Detailed high-priority items
@@ -340,7 +340,7 @@ if __name__ == "__main__":
             logger.info(f"   Description: {item['description']}")
             logger.info(f"   Action: {item['action']}")
         
-        logger.info("\n✅ RiskAnalyzer integration test successful!")
+        logger.info("\n✅ Riskanalyser integration test successful!")
         
     except Exception as e:
         logger.critical(f"❌ Test failed: {e}", exc_info=True)
